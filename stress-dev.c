@@ -257,6 +257,23 @@ static void stress_dev_dir(
 			continue;
 
 		(void)stress_mk_filename(tmp, sizeof(tmp), path, d->d_name);
+#if defined(__QNX__)
+		if (stat(tmp, &buf) == 0)
+		{
+			if (S_ISDIR(buf.st_mode))
+			{
+				if ((buf.st_mode & flags) == 0)
+					continue;
+				stress_dev_dir(args, tmp, depth + 1, tty_name);
+			}
+			else if (S_ISCHR(buf.st_mode) || S_ISBLK(buf.st_mode))
+			{
+				if (strstr(tmp, "watchdog"))
+					continue;
+				stress_dev_new(tmp);
+			}
+		}
+#else
 		switch (d->d_type) {
 		case DT_DIR:
 			ret = stat(tmp, &buf);
@@ -275,6 +292,7 @@ static void stress_dev_dir(
 		default:
 			break;
 		}
+#endif
 	}
 done:
 	stress_dirent_list_free(dlist, n);

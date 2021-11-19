@@ -36,7 +36,7 @@ static const stress_help_t help[] = {
  *    intr-msg.c:387: _hurd_intr_rpc_mach_msg: Assertion
  *    `m->header.msgh_id == msgid + 100'
  */
-#if !defined(__gnu_hurd__)
+#if !defined(__gnu_hurd__) && !defined(__QNX__)
 
 #define ABORT_TIMEOUT	(0.0025)
 

@@ -59,6 +59,13 @@ endif
 endif
 
 #
+# QNX flags, only to be used when using GCC
+#
+ifeq ($(QNX),1)
+LDFLAGS += -lsocket
+endif
+
+#
 # Static flags, only to be used when using GCC
 #
 ifeq ($(STATIC),1)
@@ -340,6 +347,12 @@ STRESS_SRC = \
 	stress-zero.c \
 	stress-zlib.c \
 	stress-zombie.c \
+
+ifeq ($(QNX),1)
+STRESS_SRC += qnx/tsearch.c \
+	qnx/tdelete.c \
+	qnx/tfind.c 
+endif
 
 #
 # Stress core

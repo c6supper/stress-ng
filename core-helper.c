@@ -1497,6 +1497,8 @@ int stress_sighandler(
 		}
 	}
 #endif
+
+#if !defined(__QNX__)
 	(void)memset(&new_action, 0, sizeof new_action);
 	new_action.sa_handler = handler;
 	(void)sigemptyset(&new_action.sa_mask);
@@ -1507,6 +1509,8 @@ int stress_sighandler(
 			name, stress_strsignal(signum), errno, strerror(errno));
 		return -1;
 	}
+#endif
+
 	return 0;
 }
 
