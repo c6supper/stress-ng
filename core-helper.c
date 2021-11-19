@@ -1498,18 +1498,18 @@ int stress_sighandler(
 	}
 #endif
 
-#if !defined(__QNX__)
 	(void)memset(&new_action, 0, sizeof new_action);
 	new_action.sa_handler = handler;
 	(void)sigemptyset(&new_action.sa_mask);
+#if !defined(__QNX__)
 	new_action.sa_flags = SA_ONSTACK;
+#endif
 
 	if (sigaction(signum, &new_action, orig_action) < 0) {
 		pr_fail("%s: sigaction %s: errno=%d (%s)\n",
 			name, stress_strsignal(signum), errno, strerror(errno));
 		return -1;
 	}
-#endif
 
 	return 0;
 }
